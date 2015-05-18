@@ -24,8 +24,26 @@ class RecipesController < ApplicationController
       end
   end
   
-  private
+  def edit
+    @recipe = Recipe.find(params[:id])
+    
+  end
   
+  def update
+    @recipe = Recipe.find(params[:id])
+    if @recipe.update(recipe_params)
+      #do something
+      flash[:success] = "Your recipe was created succesfully!"
+      redirect_to recipe_path(@recipe)
+    else
+      render :edit
+    end
+  end
+  
+  
+  private
+  # STRONG PARAMS: hay que indicar qué campos va a acceptar para crear el nuevo objeto.
+  # Lo utilizamos en los POST requests: create y update.
     def recipe_params
       params.require(:recipe).permit(:name, :sumary, :description)
     end
