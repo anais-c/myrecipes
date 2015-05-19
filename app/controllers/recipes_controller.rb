@@ -45,7 +45,7 @@ class RecipesController < ApplicationController
   # STRONG PARAMS: hay que indicar qué campos va a acceptar para crear el nuevo objeto.
   # Lo utilizamos en los POST requests: create y update.
     def recipe_params
-      params.require(:recipe).permit(:name, :sumary, :description)
+      params.require(:recipe).permit(:name, :sumary, :description, :picture)
     end
   
   
