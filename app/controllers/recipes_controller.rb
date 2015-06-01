@@ -1,6 +1,7 @@
 class RecipesController < ApplicationController
   before_action :set_recipe, only: [:edit, :update, :show, :like]
-  before_action :require_user, except: [:show, :index]
+  before_action :require_user, except: [:show, :index, :like]
+  before_action :require_user_like, only: [:like]
   before_action :require_same_user, only: [:edit, :update]
   
   def index
@@ -57,7 +58,7 @@ class RecipesController < ApplicationController
   # STRONG PARAMS: hay que indicar qué campos va a acceptar para crear el nuevo objeto.
   # Lo utilizamos en los POST requests: create y update.
     def recipe_params
-      params.require(:recipe).permit(:name, :sumary, :description, :picture)
+      params.require(:recipe).permit(:name, :sumary, :description, :picture, style_ids: [], ingredient_ids: [])
     end
   
     def set_recipe
@@ -70,4 +71,12 @@ class RecipesController < ApplicationController
         redirect_to recipes_path
       end
     end
+    
+    def require_user_like
+      if !logged_in?
+        flash[:danger] = "You must be logged in to perform that action"
+        redirect_to :back
+      end
+    end
+    
 end
